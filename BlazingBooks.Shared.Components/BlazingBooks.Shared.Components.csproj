@@ -19,4 +19,8 @@
     <ProjectReference Include="..\BlazingBooks.Shared\BlazingBooks.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared\" />
+  </ItemGroup>
+
 </Project>

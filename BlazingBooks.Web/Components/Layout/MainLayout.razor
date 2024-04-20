@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
+@* <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
@@ -14,4 +14,23 @@
             @Body
         </article>
     </main>
+</div> *@
+
+<NavMenu />
+<div class="container-fluid bg-main">
+    <div class="container d-flex flex-column justify-content-center align-items-center p-5">
+        <SectionOutlet SectionName="PageTitle" />
+    </div>
+</div>
+
+@Body
+
+<hr />
+
+<div class="container">
+    <footer class="d-flex align-items-align-content-center justify-content-center">
+        <p>
+            &copy; @DateTime.Today.Year - Blazing Books | Developed by <a href="https://www.github.com/burhan-xd" target="_blank">Burhan-xD</a>
+        </p>
+    </footer>
 </div>

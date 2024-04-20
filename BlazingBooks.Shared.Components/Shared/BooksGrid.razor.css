@@ -1,0 +1,16 @@
+
+.book-block {
+    margin-bottom: 20px;
+}
+
+    .book-block .image-box {
+        margin: 0px;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+        .book-block .image-box img {
+            width: 100% !important;
+            height: 300px !important;
+            object-fit: cover !important;
+        }

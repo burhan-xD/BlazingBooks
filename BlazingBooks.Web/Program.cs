@@ -32,6 +32,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<App>();
+app.MapRazorComponents<App>()
+    .AddAdditionalAssemblies(typeof(BlazingBooks.Shared.Components.Pages.Books).Assembly);
 
 app.Run();
+// 1 23 15

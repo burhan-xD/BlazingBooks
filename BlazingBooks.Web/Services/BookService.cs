@@ -108,10 +108,11 @@ namespace BlazingBooks.Web.Services
             using var context = _dbContextFactory.CreateDbContext();
             var query = context.Books.Where(b => b.Author.Slug == authorSlug);
             var totalCount = await query.CountAsync();
-            var books = await query.Select(b => new BookListDto(b.Id, b.Title, b.Image, new AuthorDto(b.Author.Name, b.Author.Slug)))
+            var books = await query
                 .OrderByDescending(b => b.Id)
                 .Skip((pageNo - 1) * pageSize)
                 .Take(pageSize)
+                .Select(b => new BookListDto(b.Id, b.Title, b.Image, new AuthorDto(b.Author.Name, b.Author.Slug)))
                 .ToArrayAsync();
 
             return new PageResult<BookListDto>(books, totalCount);

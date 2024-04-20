@@ -1,0 +1,25 @@
+
+<div class="right-box">
+    <h3 class="m-0 heading text-center py-3 bg-white">Populer Books</h3>
+    <div class="populer-books-list">
+        @foreach (var b in PopulerBooksList)
+        {
+            <div class="populer-book-item">
+                <a href="/books/@b.Id" title="@b.Title">
+                    <img src="@b.Image" alt="@b.Title" class="me-3" />
+                </a>
+                <div class="d-flex flex-column justify-content-center">
+                    <a href="/books/@b.Id" class="book-title" title="@b.Title">@b.Title</a>
+                    <a href="/authors/@b.Author.Slug/books" title="Books by @b.Author.Name" class="book-author">
+                        by @b.Author.Name
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code{
+    [Parameter, EditorRequired]
+    public BookListDto[] PopulerBooksList { get; set; } = [];
+}

@@ -1,0 +1,122 @@
+﻿@page "/"
+@page "/page/{pageNo:int?}"
+
+@inject IBookService BookService
+
+<PageTitle>Home | Blazing Books</PageTitle>
+
+<SectionContent SectionName="PageTitle">
+    <h1 class="m-0 text-white fw-bold">Blazing Books</h1>
+    <h3 class="text-white mt-2">A library of hundreds of populer books</h3>
+</SectionContent>
+
+<div class="container-lg">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="genre-list">
+                        <div class="genre-item @(string.IsNullOrWhiteSpace(GenreSlug) ? "active" : "")">
+                            <a class="genre-link" href="/" title="Top Books">Top Books</a>
+                        </div>
+                        @foreach (var g in _genres)
+                        {
+                            <div class="genre-item @(GenreSlug == g.Slug ? "active" : "")">
+                                <a class="genre-link" href="?genre=@g.Slug" title="@g.Name Books">@g.Name</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <h3 class="mt-2 mb-3 heading">@_heading</h3>
+
+                <BooksGrid Books="_books"/>
+                @* <div class="row">
+                    @foreach (var b in _books)
+                    {
+                        <div class="book-block col-sm-6 col-lg-3">
+                            <a href="/books/@b.Id" title="@b.Title">
+                                <figure class="image-box bg-main-light">
+                                    <img src="@b.Image" alt="@b.Title" />
+                                </figure>
+                                <div class="p-2">
+                                    <h6 class="text-main heading text-center">@b.Title</h6>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div> *@
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <PopulerBooks PopulerBooksList="_popularBooks" />
+            @* <div class="right-box">
+                <h3 class="m-0 heading text-center py-3 bg-white">Populer Books</h3>
+                <div class="populer-books-list">
+                    @foreach (var b in _popularBooks)
+                    {
+                        <div class="populer-book-item">
+                            <a href="/books/@b.Id" title="@b.Title">
+                                <img src="@b.Image" alt="@b.Title" class="me-3" />
+                            </a>
+                            <div class="d-flex flex-column justify-content-center">
+                                <a href="/books/@b.Id" class="book-title" title="@b.Title">@b.Title</a>
+                                <a href="/authors/@b.Author.Slug/books" title="Books by @b.Author.Name" class="book-author">
+                                    by @b.Author.Name
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div> *@
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int PageSize = 16;
+
+    [Parameter]
+    public int? PageNo { get; set; } = 1;
+
+    [SupplyParameterFromQuery(Name = "genre")]
+    public string? GenreSlug { get; set; }
+
+    private GenreDto[] _genres = [];
+    private BookListDto[] _books = [];
+    private BookListDto[] _popularBooks = [];
+    private int _totalCount = 0;
+
+    private string _heading = "Top Books";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // _genres = await BookService.GetGenresAsync(topOnly: true);
+        // (_books, _totalCount)  = await BookService.GetBooksAsync(PageNo ?? 1, PageSize);
+        // _popularBooks = await BookService.GetPopulerBooksAsync(10);
+
+        var genreTask = BookService.GetGenresAsync(topOnly: false);
+        var booksTask = BookService.GetBooksAsync(PageNo ?? 1, PageSize, GenreSlug);
+        var popularTask = BookService.GetPopulerBooksAsync(10, GenreSlug);
+
+        _genres = await genreTask;
+        (_books, _totalCount) = await booksTask;
+        _popularBooks = await popularTask;
+
+        if (!string.IsNullOrWhiteSpace(GenreSlug))
+        {
+            var selectedGenre = _genres.FirstOrDefault(g => g.Slug == GenreSlug);
+            if (selectedGenre.Name is not null)
+            {
+                _heading = $"{selectedGenre.Name} Books";
+            }
+            else
+            {
+                _heading = "Top Books";
+            }
+        }
+
+    }
+
+}

@@ -1,0 +1,114 @@
+.genre-list {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    background-color: white;
+    border: 1px solid var(--color-very-light-gray);
+    border-radius: 5px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+    .genre-list::-webkit-scrollbar {
+        height: 0;
+    }
+
+    .genre-list:hover::-webkit-scrollbar {
+        height: 20px;
+    }
+
+    .genre-list::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    .genre-list:hover::-webkit-scrollbar-thumb {
+        background-color: var(--color-main);
+    }
+
+    .genre-list::-webkit-scrollbar-track {
+        background-color: lightblue;
+    }
+
+
+.genre-item {
+    padding: 10px;
+}
+
+    .genre-item.active {
+        background-color: var(--color-main);
+        color: white;
+        border-radius: 5px;
+    }
+
+.genre-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: #555;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.genre-item.active .genre-link {
+    color: white;
+}
+
+/*################# BooksGrid.css*/
+/*.book-block {
+    margin-bottom: 20px;
+}
+
+    .book-block .image-box {
+        margin: 0px;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+        .book-block .image-box img {
+            width: 100% !important;
+            height: 300px !important;
+            object-fit: cover !important;
+        }*/
+
+/*################# PopulerBooks.css*/
+/*.right-box {
+    margin-top: 20px;
+    box-shadow: 0 0 5px lightgray;
+    border-radius: 8px;
+}
+
+.populer-book-item {
+    background-color: #f1f4f5;
+    padding: 15px;
+    margin-bottom: 5px;
+    display: grid;
+    grid-template-columns: 100px auto;
+    grid-column-gap: 10px;
+}
+
+
+    .populer-book-item:first-child {
+        border-top: 1px solid var(--color-very-light-gray);
+    }
+
+    .populer-book-item:last-child{
+        margin-bottom: 0;
+    }
+
+    .populer-book-item img{
+        width: 100px;
+        height: 120px;
+    }
+
+.book-title {
+    color: black;
+    opacity: 0.8;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 25px;
+    margin-bottom: 16px;
+}
+
+.book-author {
+    color: darkgray;
+    font-size: 17px;
+}*/

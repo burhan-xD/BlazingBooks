@@ -1,0 +1,127 @@
+@page "/books/{bookId:int}"
+
+@inject NavigationManager NavigationManager
+@inject IBookService BookService
+
+<PageTitle>@_book?.Title | Blazing Books</PageTitle>
+
+<SectionContent SectionName="PageTitle">
+    <h1 class="m-0 text-white fw-bold">@_book?.Title - Book Description</h1>
+</SectionContent>
+
+@if (_book is not null)
+{
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-4 d-flex flex-column align-items-center">
+                <div class="image-wrapper">
+                    <img src="@_book.Image" alt="@_book.Title" class="img-responsive" />
+                </div>
+                <div class="my-4">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Book Id</th>
+                                <td>@_book.Id</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Format</th>
+                                <td>@_book.Format</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">No. of Pages</th>
+                                <td>@_book.NumPages</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <a href="@_book.BookLink" target="_blank" class="btn btn-book fab mb-4">
+                    @(string.IsNullOrWhiteSpace(_book.BuyLink) ? "Read More" : "Buy Now")
+                </a>
+
+            </div>
+            <div class="col-sm-8">
+                <h2 class="fw-bold">@_book.Title</h2>
+                <h5 class="mt-3">
+                    <span>by</span>
+                    <a href="/authors/@_book.Author.Slug/books" title="Books by @_book.Author.Name" class="text-secondary fw-bold">
+                        @_book.Author.Name
+                    </a>
+                </h5>
+                <hr />
+                <h3 class="my-3">Description</h3>
+                <p class="">
+                    @_book.Description
+                </p>
+
+                <h4 class="my-3">Genres</h4>
+                <div class="d-flex flex-wrap">
+                    @foreach (var g in _book.Genres)
+                    {
+                        <a href="/?genre=@g.Slug" class="genre-tag" title="@g.Name Books">@g.Name</a>
+                    }
+                </div>
+
+                <hr style="height: 5px" class="text-main" />
+                <h4>Similar Books</h4>
+
+                <div class="row">
+                    @foreach (var b in _similarBooks)
+                    {
+                        <div class="col-6 col-sm-4 mb-4">
+                            <a href="/books/@b.Id" title="@b.Title">
+                                <div class="d-flex flex-column justify-content-center align-items-center bg-light p-2">
+                                    <img src="@b.Image" alt="@b.Title" class="img-fluid similar-book-img" />
+                                    <label class="text-truncate mt-2 similar-book-title">@b.Title</label>
+                                </div>
+                             </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@code {
+    [Parameter]
+    public int BookId { get; set; }
+
+    private BookDetailsDto _book;
+    private BookListDto[] _similarBooks = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (BookId <= 0)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+        var similarBooksTask = BookService.GetSimilarBooksAsync(BookId, 6);
+        _book = await BookService.GetBookAsync(BookId);
+        _similarBooks = await similarBooksTask;
+
+        if (_book is null)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+    }
+}
+
+
+@* var similarBooksTask = BookService.GetSimilarBooksAsync(BookId, 6);
+        _book = await BookService.GetBookAsync(BookId);
+        _similarBooks = await similarBooksTask;
+
+Copilot:
+    Bu iyi bir soru! “var similarBooksTask” deðiþkeni, benzer kitaplarý asenkron olarak almak için bir görev (task) oluþturur. Bu yaklaþým, verilerin yüklendiði sýrada diðer iþlemlerin devam etmesine izin verir. Yani, _similarBooks dizisini doldurmadan önce benzer kitaplarý almak için bir araç olarak kullanýlýr. Bu, uygulamanýn daha hýzlý ve daha duyarlý olmasýna yardýmcý olabilir. Ayrýca, asenkron iþlemler, kullanýcý arayüzünün donmamasýný saðlar. Yani, bu yöntem performans ve kullanýcý deneyimi açýsýndan daha iyi bir seçenek olabilir.
+ChatGpt:
+var similarBooksTask" deðiþkeni, "GetSimilarBooksAsync" metodu çaðrýldýðýnda dönen görevi temsil eder. Kod, bu görevin sonucunu beklerken baþka iþlemleri yapmaya devam edebilir. Bu nedenle, görevi baþlatmak ve ardýndan sonucunu beklemek için bir deðiþken kullanýlýr.
+
+Bu durumda, _similarBooks alanýný doldurmak için GetSimilarBooksAsync yöntemi çaðrýlýr ve bu yöntem bir görev döndürür. await anahtar kelimesi kullanýlarak bu görevin sonucu beklenir ve ardýndan _similarBooks alanýna atýlýr.
+
+Eðer _similarBooks alanýný doðrudan BookService.GetSimilarBooksAsync(BookId, 6) ile doldurursanýz, GetBookAsync(BookId) metodunun sonucunu beklerken GetSimilarBooksAsync metodunun tamamlanmasýný bekleyemezsiniz. Bu, her iki iþlemi paralel olarak gerçekleþtirmek yerine sýrayla gerçekleþtirir ve kodunuzun performansýný düþürebilir. Bu nedenle, GetSimilarBooksAsync yönteminin dönüþ deðeri var similarBooksTask deðiþkeninde saklanýr ve bu görevin sonucunu beklerken diðer iþlemler devam eder. *@
