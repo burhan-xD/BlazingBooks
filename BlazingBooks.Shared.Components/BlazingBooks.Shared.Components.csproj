@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="shared\BookDetsComponent.razor" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -20,7 +24,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Shared\" />
+    <UpToDateCheckInput Remove="shared\BookDetsComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="shared\BookDetsComponent.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="shared\BookDetsComponent.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,18 @@
-@page "/books/{bookId:int}"
-
-
-
-@inject NavigationManager NavigationManager
+ï»¿@inject NavigationManager NavigationManager
 @inject IBookService BookService
+@inject ICommonService CommonService
 
 <PageTitle>@_book?.Title | Blazing Books</PageTitle>
 
 <SectionContent SectionName="PageTitle">
-    <h1 class="m-0 text-white fw-bold">@_book?.Title - Book Description</h1>
+    @if (CommonService.IsWeb)
+    {
+        <h1 class="m-0 text-white fw-bold">@_book?.Title - Book Description</h1>
+    }
+    else
+    {
+        <span>@_book?.Title</span>
+    }
 </SectionContent>
 
 @if (_book is not null)
@@ -77,7 +81,7 @@
                                     <img src="@b.Image" alt="@b.Title" class="img-fluid similar-book-img" />
                                     <label class="text-truncate mt-2 similar-book-title">@b.Title</label>
                                 </div>
-                             </a>
+                            </a>
                         </div>
                     }
                 </div>
@@ -89,7 +93,7 @@
 
 
 @code {
-    [Parameter]
+    [Parameter, EditorRequired]
     public int BookId { get; set; }
 
     private BookDetailsDto _book;
@@ -120,10 +124,10 @@
         _similarBooks = await similarBooksTask;
 
 Copilot:
-    Bu iyi bir soru! “var similarBooksTask” değişkeni, benzer kitapları asenkron olarak almak için bir görev (task) oluşturur. Bu yaklaşım, verilerin yüklendiği sırada diğer işlemlerin devam etmesine izin verir. Yani, _similarBooks dizisini doldurmadan önce benzer kitapları almak için bir araç olarak kullanılır. Bu, uygulamanın daha hızlı ve daha duyarlı olmasına yardımcı olabilir. Ayrıca, asenkron işlemler, kullanıcı arayüzünün donmamasını sağlar. Yani, bu yöntem performans ve kullanıcı deneyimi açısından daha iyi bir seçenek olabilir.
+    Bu iyi bir soru! â€œvar similarBooksTaskâ€ deÄŸiÅŸkeni, benzer kitaplarÄ± asenkron olarak almak iÃ§in bir gÃ¶rev (task) oluÅŸturur. Bu yaklaÅŸÄ±m, verilerin yÃ¼klendiÄŸi sÄ±rada diÄŸer iÅŸlemlerin devam etmesine izin verir. Yani, _similarBooks dizisini doldurmadan Ã¶nce benzer kitaplarÄ± almak iÃ§in bir araÃ§ olarak kullanÄ±lÄ±r. Bu, uygulamanÄ±n daha hÄ±zlÄ± ve daha duyarlÄ± olmasÄ±na yardÄ±mcÄ± olabilir. AyrÄ±ca, asenkron iÅŸlemler, kullanÄ±cÄ± arayÃ¼zÃ¼nÃ¼n donmamasÄ±nÄ± saÄŸlar. Yani, bu yÃ¶ntem performans ve kullanÄ±cÄ± deneyimi aÃ§Ä±sÄ±ndan daha iyi bir seÃ§enek olabilir.
 ChatGpt:
-var similarBooksTask" değişkeni, "GetSimilarBooksAsync" metodu çağrıldığında dönen görevi temsil eder. Kod, bu görevin sonucunu beklerken başka işlemleri yapmaya devam edebilir. Bu nedenle, görevi başlatmak ve ardından sonucunu beklemek için bir değişken kullanılır.
+var similarBooksTask" deÄŸiÅŸkeni, "GetSimilarBooksAsync" metodu Ã§aÄŸrÄ±ldÄ±ÄŸÄ±nda dÃ¶nen gÃ¶revi temsil eder. Kod, bu gÃ¶revin sonucunu beklerken baÅŸka iÅŸlemleri yapmaya devam edebilir. Bu nedenle, gÃ¶revi baÅŸlatmak ve ardÄ±ndan sonucunu beklemek iÃ§in bir deÄŸiÅŸken kullanÄ±lÄ±r.
 
-Bu durumda, _similarBooks alanını doldurmak için GetSimilarBooksAsync yöntemi çağrılır ve bu yöntem bir görev döndürür. await anahtar kelimesi kullanılarak bu görevin sonucu beklenir ve ardından _similarBooks alanına atılır.
+Bu durumda, _similarBooks alanÄ±nÄ± doldurmak iÃ§in GetSimilarBooksAsync yÃ¶ntemi Ã§aÄŸrÄ±lÄ±r ve bu yÃ¶ntem bir gÃ¶rev dÃ¶ndÃ¼rÃ¼r. await anahtar kelimesi kullanÄ±larak bu gÃ¶revin sonucu beklenir ve ardÄ±ndan _similarBooks alanÄ±na atÄ±lÄ±r.
 
-Eğer _similarBooks alanını doğrudan BookService.GetSimilarBooksAsync(BookId, 6) ile doldurursanız, GetBookAsync(BookId) metodunun sonucunu beklerken GetSimilarBooksAsync metodunun tamamlanmasını bekleyemezsiniz. Bu, her iki işlemi paralel olarak gerçekleştirmek yerine sırayla gerçekleştirir ve kodunuzun performansını düşürebilir. Bu nedenle, GetSimilarBooksAsync yönteminin dönüş değeri var similarBooksTask değişkeninde saklanır ve bu görevin sonucunu beklerken diğer işlemler devam eder. *@
+EÄŸer _similarBooks alanÄ±nÄ± doÄŸrudan BookService.GetSimilarBooksAsync(BookId, 6) ile doldurursanÄ±z, GetBookAsync(BookId) metodunun sonucunu beklerken GetSimilarBooksAsync metodunun tamamlanmasÄ±nÄ± bekleyemezsiniz. Bu, her iki iÅŸlemi paralel olarak gerÃ§ekleÅŸtirmek yerine sÄ±rayla gerÃ§ekleÅŸtirir ve kodunuzun performansÄ±nÄ± dÃ¼ÅŸÃ¼rebilir. Bu nedenle, GetSimilarBooksAsync yÃ¶nteminin dÃ¶nÃ¼ÅŸ deÄŸeri var similarBooksTask deÄŸiÅŸkeninde saklanÄ±r ve bu gÃ¶revin sonucunu beklerken diÄŸer iÅŸlemler devam eder. *@

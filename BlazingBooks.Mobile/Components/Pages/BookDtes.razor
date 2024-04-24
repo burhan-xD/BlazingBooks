@@ -1,0 +1,8 @@
+﻿@page "/books/{bookId:int}"
+
+<BlazingBooks.Shared.Components.Shared.BookDetsComponent BookId="BookId" />
+
+@code{
+    [Parameter]
+    public int BookId{get; set;}
+}

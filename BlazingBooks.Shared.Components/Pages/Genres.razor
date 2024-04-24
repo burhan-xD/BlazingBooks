@@ -1,11 +1,19 @@
 ﻿@page "/genres"
 
 @inject IBookService BookService
+@inject ICommonService CommonService
 
 <PageTitle>All Genres | Blazing Books</PageTitle>
 
 <SectionContent SectionName="PageTitle">
-    <h1 class="m-0 text-white fw-bold">All Genres</h1>
+    @if (CommonService.IsWeb)
+    {
+        <h1 class="m-0 text-white fw-bold">All Genres</h1>
+    }
+    else
+    {
+        <span>All Genres</span>
+    }
 </SectionContent>
 
 <div class="container mt-3">

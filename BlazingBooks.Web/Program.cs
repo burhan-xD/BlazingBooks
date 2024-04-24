@@ -1,4 +1,5 @@
 using BlazingBooks.Shared.Interfaces;
+using BlazingBooks.Web;
 using BlazingBooks.Web.Components;
 using BlazingBooks.Web.Data;
 using BlazingBooks.Web.Services;
@@ -16,6 +17,7 @@ builder.Services.AddDbContextFactory<BookContext>(options =>
 builder.Services.AddRazorComponents();
 
 builder.Services.AddTransient<IBookService, BookService>();
+builder.Services.AddSingleton<ICommonService, CommonService>();
 
 var app = builder.Build();
 
@@ -35,5 +37,6 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(BlazingBooks.Shared.Components.Pages.Books).Assembly);
 
+app.MapBookEndPoints();
+
 app.Run();
-// 1 23 15

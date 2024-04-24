@@ -1,0 +1,14 @@
+.tabbar {
+    height: var(--tabbar-height);
+    box-shadow: 0 0 5px var(--color-main-light);
+    border-top: 1px solid var(--color-very-light-gray);
+}
+
+.tab-link .tab-link:hover {
+    color: #068c91;
+}
+
+.tab-link.active {
+    font-weight: bold;
+    color: var(--color-main)
+}

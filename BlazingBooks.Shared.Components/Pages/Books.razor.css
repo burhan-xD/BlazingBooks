@@ -35,7 +35,8 @@
 }
 
     .genre-item.active {
-        background-color: var(--color-main);
+        /*background-color: var(--color-main);*/ /*mobilde calismiyor!*/
+        background-color: #0273eb;
         color: white;
         border-radius: 5px;
     }

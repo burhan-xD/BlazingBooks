@@ -2,12 +2,20 @@
 @page "/page/{pageNo:int?}"
 
 @inject IBookService BookService
+@inject ICommonService CommonService
 
 <PageTitle>Home | Blazing Books</PageTitle>
 
 <SectionContent SectionName="PageTitle">
-    <h1 class="m-0 text-white fw-bold">Blazing Books</h1>
-    <h3 class="text-white mt-2">A library of hundreds of populer books</h3>
+    @if (CommonService.IsWeb)
+    {
+        <h1 class="m-0 text-white fw-bold">Blazing Books</h1>
+        <h3 class="text-white mt-2">A library of hundreds of populer books</h3>
+    }
+    else
+    {
+        <span>Blazing Books</span>
+    }
 </SectionContent>
 
 <div class="container-lg">

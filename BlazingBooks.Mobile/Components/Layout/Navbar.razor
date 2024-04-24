@@ -1,0 +1,26 @@
+
+<div class="navbar fixed-top bg-primary px-3 py-2">
+    @if (IsInnerPage)
+    {
+        <h1 class="m-0 text-white">@ChildContent</h1>
+    }
+    else
+    {
+        <div class="row w-100 d-flex align-items-center">
+            <div class="col-1 d-flex">
+                <a href="" class="text-white h2 fw-bold my-auto"> &larr; </a>
+            </div>
+            <div class="col-11 d-flex my-auto">
+                <h3 class="m-0 texh-white text-truncate">@ChildContent</h3>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public bool IsInnerPage { get; set; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; set; }
+}

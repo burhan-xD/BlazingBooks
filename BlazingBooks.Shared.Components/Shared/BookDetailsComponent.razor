@@ -1,14 +1,19 @@
-@page "/books/{bookId:int}"
-
 
 
 @inject NavigationManager NavigationManager
 @inject IBookService BookService
+@inject ICommonService CommonService
 
 <PageTitle>@_book?.Title | Blazing Books</PageTitle>
 
 <SectionContent SectionName="PageTitle">
-    <h1 class="m-0 text-white fw-bold">@_book?.Title - Book Description</h1>
+    @if(CommonService.IsWeb){
+        <h1 class="m-0 text-white fw-bold">@_book?.Title - Book Description</h1>
+    }
+    else
+    {
+        <span>@_book?.Title</span>
+    }
 </SectionContent>
 
 @if (_book is not null)
@@ -77,7 +82,7 @@
                                     <img src="@b.Image" alt="@b.Title" class="img-fluid similar-book-img" />
                                     <label class="text-truncate mt-2 similar-book-title">@b.Title</label>
                                 </div>
-                             </a>
+                            </a>
                         </div>
                     }
                 </div>
@@ -89,7 +94,7 @@
 
 
 @code {
-    [Parameter]
+    [Parameter, EditorRequired]
     public int BookId { get; set; }
 
     private BookDetailsDto _book;

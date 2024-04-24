@@ -1,0 +1,4 @@
+.navbar {
+    height: var(--navbar-height);
+    box-shadow: 0 0 5px black;
+}
